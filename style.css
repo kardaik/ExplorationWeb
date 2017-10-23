@@ -1,0 +1,24 @@
+table {
+    border-collapse: collapse;
+	border: 1px solid black;
+}
+
+th, td {
+    border: 1px solid black;
+	width: 50px;
+	height: 50px;
+}
+
+
+.c {
+	background-color: gray;
+}
+.f {
+	background-color: green;
+}
+.m {
+	background-color: white;
+}
+.d {
+	background-color: red;
+}

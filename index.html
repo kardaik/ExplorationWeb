@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.search-box input[type="text"]').on("keyup input", function(){
+        /* Get input value on change */
+        var inputVal = $(this).val();
+        var resultDropdown = $(this).siblings(".result");
+        if(inputVal.length){
+            $.get("liveSearch.php", {term: inputVal}).done(function(data){
+                // Display the returned data in browser
+				
+				console.log(JSON.parse(data));
+				var string1 = string2(JSON.parse(data));
+                resultDropdown.html(string1);
+            });
+        } else{
+            resultDropdown.empty();
+        }
+    });
+    
+    // Set search input value on click of result item
+    $(document).on("click", ".result p", function(){
+        $(this).parents(".search-box").find('input[type="text"]').val($(this).text());
+        $(this).parent(".result").empty();
+    });
+});
+
+//json
+function string2(string3){
+var string5="";
+for(string4=0;string4<string3.length; string4++){
+string5 +="<p>"+string3[string4].Tag+"<\p>";
+}
+return string5;
+}
+
+//button jquerry
+function volcan(){
+	$(".m").css({'background-color': 'red'})
+	$(".c").css({'background-color': 'gray'})
+}
+
+function glacier(){
+	$(".m").css({'background-color': 'blue'})
+	$(".c").css({'background-color': 'white'})
+}
+
+function normale(){
+	$(".m").css({'background-color': 'white'})
+	$(".c").css({'background-color': 'gray'})
+}
+
+
+</script>
+
+</head>
+<body>
+
+<h1 id="myHeader"></h1>
+<p>Changer les couleurs de la map:</p>
+<button type="button" onclick="volcan()">Volcan</button>
+<button type="button" onclick="glacier()">Glacier</button>
+<button type="button" onclick="normale()">Laboratoire</button>
+
+
+<table id="table1">
+  <tr id="0">
+    <td id="d" class="d"><img src="ROGER.jpg"/></td>
+    <td id="c" class="c"></td>
+    <td id="c" class="c"></td>
+	<td id="c" class="c"></td>
+    <td id="m" class="m"></td>
+    <td id="m" class="m"></td>
+	<td id="c" class="c"></td>
+    <td id="c" class="c"></td>
+  </tr>
+  
+  <tr id="1">
+    <td id="m" class="m"></td>
+    <td id="c" class="c"></td>
+    <td id="m" class="m"></td>
+	<td id="c" class="c"></td>
+    <td id="c" class="c"></td>
+    <td id="c" class="c"></td>
+	<td id="c" class="c"></td>
+    <td id="c" class="c"></td>
+  </tr>
+  
+  <tr id="2">
+    <td id="c" class="c"></td>
+    <td id="c" class="c"></td>
+    <td id="m" class="m"></td>
+	<td id="c" class="c"></td>
+    <td id="m" class="m"></td>
+    <td id="m" class="m"></td>
+	<td id="c" class="c"></td>
+    <td id="m" class="m"></td>
+  </tr>
+  
+  <tr id="3">
+    <td id="m" class="m"></td>
+    <td id="c" class="c"></td>
+    <td id="c" class="c"></td>
+	<td id="c" class="c"></td>
+    <td id="m" class="m"></td>
+    <td id="c" class="c"></td>
+	<td id="c" class="c"></td>
+    <td id="m" class="m"></td>
+  </tr>
+  
+  <tr id="4">
+    <td id="m" class="m"></td>
+    <td id="c" class="c"></td>
+    <td id="m" class="m"></td>
+	<td id="c" class="c"></td>
+    <td id="m" class="m"></td>
+    <td id="m" class="m"></td>
+	<td id="c" class="c"></td>
+    <td id="m" class="m"></td>
+  </tr>
+  
+  <tr id="5">
+    <td id="c" class="c"></td>
+    <td id="c" class="c"></td>
+    <td id="m" class="m"></td>
+	<td id="c" class="c"></td>
+    <td id="c" class="c"></td>
+    <td id="c" class="c"></td>
+	<td id="c" class="c"></td>
+    <td id="f" class="f"></td>
+  </tr>
+  
+  <tr id="6">
+    <td id="m" class="m"></td>
+    <td id="c" class="c"></td>
+    <td id="c" class="c"></td>
+	<td id="c" class="c"></td>
+    <td id="m" class="m"></td>
+    <td id="m" class="m"></td>
+	<td id="c" class="c"></td>
+    <td id="m" class="m"></td>
+  </tr>
+
+</table>
+<p>Dernier mouvement:<span id="mouv"></span></p>
+<p>Score: <span id ="compteur">0</span> </p>
+
+<input type="button" onclick="gauche(); compt(1);">GAUCHE</input>
+<input type="button" onclick="droite(); compt(1);">DROITE</input>
+<input type="button" onclick="haut(); compt(1);">HAUT</input>
+<input type="button" onclick="bas(); compt(1);">BAS</input>
+
+
+<div id="EndScore"> 
+	<form method="post" action="sauvegarde.php">
+		<h3>Enregistrer Votre Score</h3>
+		<input type="text" name="nom" id="nom" placeholder="Nom" maxlength="250" required>
+		<input  type="hidden" id="score" name="score" value="0">
+		<input type="submit" name="save" value="Enregistré"  />
+	</form>
+</div>
+
+<form method="get"  action="Recherche.php">
+<h1>Recherche</h1>
+    <div class="search-box">
+        <input type="text" autocomplete="off" placeholder="Recherche" />
+        <div class="result"></div>
+    </div>
+<input type="submit" value="submit"  >
+</form>
+
+<form method="get" action="topScore.php">
+<input type="submit" value="top5"  >
+</form>
+
+<script src="code.js"></script>
+</body>
+</html>
